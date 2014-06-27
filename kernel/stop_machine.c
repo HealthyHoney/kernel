@@ -313,8 +313,10 @@ static void cpu_stop_park(unsigned int cpu)
 
 	/* drain remaining works */
 	spin_lock_irqsave(&stopper->lock, flags);
-	list_for_each_entry(work, &stopper->works, list)
+	list_for_each_entry(work, &stopper->works, list) {
 		cpu_stop_signal_done(work->done, false);
+		list_del_init(&work->list);
+	}
 	stopper->enabled = false;
 	spin_unlock_irqrestore(&stopper->lock, flags);
 }
