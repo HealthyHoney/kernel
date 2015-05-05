@@ -629,7 +629,13 @@ static int msm_compr_configure_dsp(struct snd_compr_stream *cstream)
 		.rampingcurve = SOFT_VOLUME_CURVE_LINEAR,
 	};
 
-	pr_debug("%s: stream_id %d\n", __func__, ac->stream_id);
+#ifdef CONFIG_HIFI_SOUND
+	pr_debug("%s: stream_id %d bits_per_sample %d\n",
+			__func__, ac->stream_id, prtd->bits_per_sample);
+#else
+	pr_debug("%s: stream_id %d bits_per_sample %d\n",
+			__func__, ac->stream_id, bits_per_sample);
+#endif
 
 #ifdef CONFIG_HIFI_SOUND
 	ret = q6asm_open_write_v2(prtd->audio_client,
