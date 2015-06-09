@@ -2383,7 +2383,7 @@ int proc_do_large_bitmap(struct ctl_table *table, int write,
 
 	if (write) {
 		unsigned long page = 0;
-		char *kbuf;
+		char *kbuf = NULL;
 
 		if (left > PAGE_SIZE - 1)
 			left = PAGE_SIZE - 1;
