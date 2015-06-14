@@ -725,9 +725,9 @@ enum{
 #define LGE_TOUCH_NAME		"lge_touch"
 
 /* Debug Mask setting */
-#define TOUCH_DEBUG_PRINT   (1)
-#define TOUCH_ERROR_PRINT   (1)
-#define TOUCH_INFO_PRINT	(1)
+#undef TOUCH_DEBUG_PRINT
+#define TOUCH_ERROR_PRINT
+#undef TOUCH_INFO_PRINT
 
 #if defined(TOUCH_INFO_PRINT)
 #define TOUCH_INFO_MSG(fmt, args...) \
