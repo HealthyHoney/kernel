@@ -223,7 +223,7 @@ static void lm3630_set_main_current_level(struct i2c_client *client, int level)
 
 	mutex_unlock(&dev->bl_mutex);
 
-	pr_info("%s : backlight level=%d, cal_value=%d \n",
+	pr_debug("%s : backlight level=%d, cal_value=%d \n",
 				__func__, level, cal_value);
 }
 
@@ -255,7 +255,7 @@ static void lm3630_set_main_current_level_no_mapping(
 void lm3630_backlight_on(int level)
 {
 	if (backlight_status == BL_OFF) {
-		pr_info("%s : level = %d\n", __func__, level);
+		pr_debug("%s : level = %d\n", __func__, level);
 
 #if defined(CONFIG_B1_LGD_PANEL)
 		mdelay(30);
@@ -302,7 +302,7 @@ void lm3630_backlight_off(void)
 	lm3630_set_main_current_level(main_lm3630_dev->client, 0);
 	backlight_status = BL_OFF;
 
-	pr_info("%s\n", __func__);
+	pr_debug("%s\n", __func__);
 	gpio_direction_output(gpio, 0);
 	msleep(6);
 
