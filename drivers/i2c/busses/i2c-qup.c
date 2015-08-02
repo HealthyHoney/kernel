@@ -1858,7 +1858,7 @@ static int i2c_qup_pm_resume_sys(struct device *device)
 	 *
 	 */
 	if (pm_runtime_suspended(device)) {
-		dev_info(device, "i2c is runtime suspended status !!! try to runtime resume !!!\n");
+		dev_dbg(device, "i2c is runtime suspended status !!! try to runtime resume !!!\n");
 	}
 
 	if (!pm_runtime_enabled(device)) {
