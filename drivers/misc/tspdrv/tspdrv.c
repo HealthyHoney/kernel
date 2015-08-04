@@ -109,6 +109,9 @@ asmlinkage void _DbgOut(int level, const char *fmt,...)
 
     int nDbgLevel = atomic_read(&g_nDebugLevel);
 
+    if (nDbgLevel > 1) // DBL_ERROR
+        return;
+
     if (0 <= level && level <= nDbgLevel) {
         va_list args;
         int ret;
