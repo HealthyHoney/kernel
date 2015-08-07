@@ -14,8 +14,8 @@
 #include "msm_vidc_debug.h"
 #include "vidc_hfi_api.h"
 
-#define MAX_DBG_BUF_SIZE 4096
-int msm_vidc_debug = VIDC_ERR | VIDC_WARN;
+#define MAX_DBG_BUF_SIZE 1024
+int msm_vidc_debug = VIDC_ERR;
 int msm_vidc_debug_out = VIDC_OUT_PRINTK;
 int msm_fw_debug = 0x18;
 int msm_fw_debug_mode = 0x1;
