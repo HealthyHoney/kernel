@@ -466,9 +466,11 @@ static ssize_t make_blink_pattern(struct device *dev, struct device_attribute *a
 
 	ret = size;
 
+#if 0
 	printk("[RGB LED] make_blink_pattern rgb is %06x\n", rgb);
 	printk("[RGB LED] make_blink_pattern delay_on is %d\n", delay_on);
 	printk("[RGB LED] make_blink_pattern delay_off %d\n", delay_off);
+#endif
 	make_blink_led_pattern(rgb, delay_on, delay_off);
 
 	return ret;
