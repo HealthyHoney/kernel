@@ -3092,6 +3092,7 @@ config BRICKED_HOTPLUG
 config MSM_CPUFREQ_LIMITER
 	tristate "MSM CPU frequency limiter"
 	default y
+	depends on STATE_NOTIFIER
 	help
 	  This driver limits MSM CPU frequency through sysfs file system.
 	  To compile this driver as a module, choose M here: the
