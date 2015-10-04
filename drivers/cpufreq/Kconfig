@@ -129,6 +129,12 @@ config CPU_FREQ_DEFAULT_GOV_NIGHTMARE
 	help
 	  Use the CPUFreq governor 'nightmare' as default
 
+config CPU_FREQ_DEFAULT_GOV_ALUCARD
+	bool "alucard"
+	select CPU_FREQ_GOV_ALUCARD
+	help
+	  Use the CPUFreq governor 'alucard' as default
+
 config CPU_FREQ_DEFAULT_GOV_INTERACTIVEX2
 	bool "interactivex2"
 	select CPU_FREQ_GOV_INTERACTIVEX2
@@ -253,6 +259,10 @@ config CPU_FREQ_GOV_ONDEMAND
 
 config CPU_FREQ_GOV_NIGHTMARE
 	tristate "'nightmare' cpufreq policy governor"
+	select CPU_FREQ_TABLE
+
+config CPU_FREQ_GOV_ALUCARD
+	tristate "'alucard' cpufreq policy governor"
 	select CPU_FREQ_TABLE
 
 config CPU_FREQ_GOV_SLIM
