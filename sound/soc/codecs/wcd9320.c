@@ -4540,6 +4540,7 @@ static unsigned int taiko_read(struct snd_soc_codec *codec,
 {
 	unsigned int val;
 	int ret;
+	struct wcd9xxx *wcd9xxx;
 
 	if (!codec)
 		return 0;
