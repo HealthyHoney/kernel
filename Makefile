@@ -359,7 +359,7 @@ MODFLAGS        = -DMODULE \
 
 CFLAGS_MODULE   = $(MODFLAGS)
 AFLAGS_MODULE   = $(MODFLAGS)
-LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
+LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds --strip-debug
 CFLAGS_KERNEL   = -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O2 \
