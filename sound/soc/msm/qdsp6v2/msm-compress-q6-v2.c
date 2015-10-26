@@ -1107,7 +1107,7 @@ static int msm_compr_set_params(struct snd_compr_stream *cstream,
 {
 	struct snd_compr_runtime *runtime = cstream->runtime;
 	struct msm_compr_audio *prtd = runtime->private_data;
-	int ret = 0, frame_sz = 0, delay_time_ms = 0;
+	int ret = 0, frame_sz = 0;
 	int i, num_rates;
 	bool is_format_gapless = false;
 
