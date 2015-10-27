@@ -35,12 +35,12 @@
  */
 
 #define DEF_FREQUENCY_DOWN_DIFFERENTIAL		(10)
-#define DEF_FREQUENCY_UP_THRESHOLD		(85)
+#define DEF_FREQUENCY_UP_THRESHOLD		(95)
 #define DEF_SAMPLING_DOWN_FACTOR		(1)
 #define MAX_SAMPLING_DOWN_FACTOR		(100000)
-#define MICRO_FREQUENCY_DOWN_DIFFERENTIAL	(3)
-#define MICRO_FREQUENCY_UP_THRESHOLD		(70)
-#define MICRO_FREQUENCY_MIN_SAMPLE_RATE		(20000)
+#define MICRO_FREQUENCY_DOWN_DIFFERENTIAL	(1)
+#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
+#define MICRO_FREQUENCY_MIN_SAMPLE_RATE		(30000)
 #define MIN_FREQUENCY_UP_THRESHOLD		(20)
 #define MAX_FREQUENCY_UP_THRESHOLD		(100)
 #define MIN_FREQUENCY_DOWN_DIFFERENTIAL		(1)
@@ -132,11 +132,12 @@ static struct dbs_tuners {
 	unsigned int second_phase_freq;
 
 } dbs_tuners_ins = {
+	.sampling_rate = 40000,
 	.up_threshold = DEF_FREQUENCY_UP_THRESHOLD,
 	.sampling_down_factor = DEF_SAMPLING_DOWN_FACTOR,
 	.down_differential = DEF_FREQUENCY_DOWN_DIFFERENTIAL,
 	.ignore_nice = 0,
-	.powersave_bias = 0,
+	.powersave_bias = 150,
 	.second_phase_freq = SECOND_PHASE_FREQ,
 };
 
@@ -654,8 +655,8 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 	/* Check for frequency increase */
 	if (max_load_freq > dbs_tuners_ins.up_threshold * policy->cur) {
 		if (policy->cur < policy->max) {
-			if (policy->cur < 1497600) dbs_freq_increase(policy, SECOND_PHASE_FREQ);
-			else if (policy->cur < 1574400) dbs_freq_increase(policy, SECOND_PHASE_FREQ);
+			if (policy->cur < 1267200) dbs_freq_increase(policy, SECOND_PHASE_FREQ);
+			else if (policy->cur < 1497600) dbs_freq_increase(policy, SECOND_PHASE_FREQ);
 			else {
 				this_dbs_info->rate_mult = dbs_tuners_ins.sampling_down_factor;
 				dbs_freq_increase(policy, policy->max);
@@ -988,6 +989,10 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 		break;
 
 	case CPUFREQ_GOV_LIMITS:
+		/* If device is being removed, skip set limits */
+		if (!this_dbs_info->cur_policy)
+			break;
+
 		mutex_lock(&this_dbs_info->timer_mutex);
 		if (policy->max < this_dbs_info->cur_policy->cur)
 			__cpufreq_driver_target(this_dbs_info->cur_policy,
