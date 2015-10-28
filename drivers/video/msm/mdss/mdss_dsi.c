@@ -1415,8 +1415,7 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
         }
 #endif
 #ifdef CONFIG_STATE_NOTIFIER
-		if (!use_fb_notifier)
-			state_suspend();
+		state_suspend();
 #endif
 		break;
 	case MDSS_EVENT_CONT_SPLASH_FINISH:
