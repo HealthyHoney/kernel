@@ -34,7 +34,7 @@
 
 #include <trace/events/cpufreq_interactive.h>
 
-static int active_count;
+static int active_count = 0;
 
 struct cpufreq_interactive_cpuinfo {
 	struct timer_list cpu_timer;
