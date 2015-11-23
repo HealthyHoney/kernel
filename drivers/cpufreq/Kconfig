@@ -196,6 +196,12 @@ config CPU_FREQ_DEFAULT_GOV_ZZMOOVE
 	  frequency lookup tables and optimized scaling triggers instead of
 	  % frequency steps to get smooth up/downscaling dependant on CPU load.
 
+config CPU_FREQ_DEFAULT_GOV_ZEROACTIVE
+        bool "zeroactive"
+        select CPU_FREQ_GOV_ZEROACTIVE
+        help
+          Use the CPUFreq governor 'zeroactive' as default
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -385,6 +391,10 @@ config CPU_FREQ_GOV_ZZMOOVE
 	  frequency lookup tables and optimized scaling triggers instead of
 	  % frequency steps to get smooth up/downscaling dependant on CPU load.
 	  If in doubt, say N.
+
+config CPU_FREQ_GOV_ZEROACTIVE
+	tristate "'zeroactive' cpufreq policy governor"
+	depends on CPU_FREQ
 
 menu "x86 CPU frequency scaling drivers"
 depends on X86
