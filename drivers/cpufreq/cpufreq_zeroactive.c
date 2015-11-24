@@ -32,7 +32,7 @@
 #include <linux/kernel_stat.h>
 #include <asm/cputime.h>
 
-static int active_count;
+static int active_count = 0;
 
 struct cpufreq_zeroactive_cpuinfo {
 	struct timer_list cpu_timer;
@@ -64,7 +64,7 @@ static spinlock_t speedchange_cpumask_lock;
 static struct mutex gov_lock;
 
 /* Hi speed to bump to from lo speed when load burst (default max) */
-static unsigned int hispeed_freq;
+static unsigned int hispeed_freq = 1267200;
 
 /* Go to hi speed when CPU load at or above this value. */
 #define DEFAULT_GO_HISPEED_LOAD 99
@@ -136,7 +136,7 @@ static unsigned int up_threshold_any_cpu_freq;
 #define DEF_HIGH_GRID_STEP             		(20)
 #define DEF_MIDDLE_GRID_LOAD				(65)
 #define DEF_HIGH_GRID_LOAD					(89)
-#define DEF_OPTIMAL_FREQ					(1574400)
+#define DEF_OPTIMAL_FREQ					(1497600)
 #define DEF_IS_GRID							(0)
 #define DEF_ABOVE_OPTIMAL_MAX_FREQ_DELAY	(20000)
 
