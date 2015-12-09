@@ -966,7 +966,7 @@ int snd_info_register(struct snd_info_entry * entry)
 	}
 	if (!S_ISDIR(entry->mode))
 		p->proc_fops = &snd_info_entry_operations;
-	proc_set_size(p, entry->size);
+	p->size = entry->size;
 	p->data = entry;
 	entry->p = p;
 	if (entry->parent)

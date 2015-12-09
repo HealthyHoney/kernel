@@ -1,4 +1,4 @@
-/*  Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+/*  Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -3198,7 +3198,6 @@ static int voice_setup_vocproc(struct voice_data *v)
 		voice_send_netid_timing_cmd(v);
 	}
 
-	/* enable slowtalk if st_enable is set and tty_mode is 0 */
 	if (v->st_enable && !v->tty_mode)
 		voice_send_set_pp_enable_cmd(v,
 					     MODULE_ID_VOICE_MODULE_ST,
@@ -4029,17 +4028,8 @@ static int voice_cvs_start_record(struct voice_data *v, uint32_t rec_mode)
 		cvs_start_record.hdr.token = 0;
 		cvs_start_record.hdr.opcode = VSS_IRECORD_CMD_START;
 
-		/* In order to enable stereo recording, 
-		 * i.e. TX on the left and RX on the right
-		 * the respective ports need to be explicitly specified:
-		 * INCALL_RECORD_TX => 0x8003
-		 * INCALL_RECORD_RX => 0x8004
-		 */
-		/* cvs_start_record.rec_mode.port_id =
-					VSS_IRECORD_PORT_ID_DEFAULT; */
-
 		cvs_start_record.rec_mode.port_id =
-					VSS_IRECORD_PORT_ID_TX_RX;
+					VSS_IRECORD_PORT_ID_DEFAULT;
 		if (rec_mode == VOC_REC_UPLINK) {
 			cvs_start_record.rec_mode.rx_tap_point =
 					VSS_IRECORD_TAP_POINT_NONE;
@@ -4062,9 +4052,6 @@ static int voice_cvs_start_record(struct voice_data *v, uint32_t rec_mode)
 			ret = -EINVAL;
 			goto fail;
 		}
-
-		/* request stereo recording */
-		cvs_start_record.rec_mode.mode = VSS_IRECORD_MODE_TX_RX_STEREO;
 
 		v->cvs_state = CMD_STATUS_FAIL;
 
@@ -4581,7 +4568,6 @@ static int voc_enable_cvp(uint32_t session_id)
 		}
 
 		voice_send_tty_mode_cmd(v);
-		/* enable slowtalk if st_enable is set and tty_mode is 0 */
 		if (v->st_enable && !v->tty_mode)
 			voice_send_set_pp_enable_cmd(v,
 					     MODULE_ID_VOICE_MODULE_ST,
@@ -4666,27 +4652,27 @@ int voc_set_tx_mute(uint32_t session_id, uint32_t dir, uint32_t mute,
 //[Audio][BSP] sehwan.lee@lge.com phonememo initial code [START]
 int voc_set_phonememo_tx_mute(uint32_t session_id, uint32_t dir, uint32_t mute)
 {
-	struct voice_data *v = voice_get_session(session_id);
-	int ret = 0;
+        struct voice_data *v = voice_get_session(session_id);
+        int ret = 0;
 
-	if (v == NULL) {
-		pr_err("%s: invalid session_id 0x%x\n", __func__, session_id);
+        if (v == NULL) {
+                pr_err("%s: invalid session_id 0x%x\n", __func__, session_id);
 
-		return -EINVAL;
-	}
+                return -EINVAL;
+        }
 
-	mutex_lock(&v->lock);
+        mutex_lock(&v->lock);
 
-	v->stream_tx.stream_mute = mute;
+        v->stream_tx.stream_mute = mute;
 
-	if ((v->voc_state == VOC_RUN) ||
-	    (v->voc_state == VOC_CHANGE) ||
-	    (v->voc_state == VOC_STANDBY))
-		ret = voice_send_phonememo_mute_cmd(v);
+        if ((v->voc_state == VOC_RUN) ||
+            (v->voc_state == VOC_CHANGE) ||
+            (v->voc_state == VOC_STANDBY))
+                ret = voice_send_phonememo_mute_cmd(v);
 
-	mutex_unlock(&v->lock);
+        mutex_unlock(&v->lock);
 
-	return ret;
+        return ret;
 }
 //[Audio][BSP] sehwan.lee@lge.com phonememo initial code [END]
 
@@ -5041,12 +5027,11 @@ int voc_standby_voice_call(uint32_t session_id)
 	u16 mvm_handle;
 	int ret = 0;
 
+	pr_debug("%s: voc state=%d", __func__, v->voc_state);
 	if (v == NULL) {
 		pr_err("%s: v is NULL\n", __func__);
 		return -EINVAL;
 	}
-	pr_debug("%s: voc state=%d", __func__, v->voc_state);
-
 	if (v->voc_state == VOC_RUN) {
 		apr_mvm = common.apr_q6_mvm;
 		if (!apr_mvm) {
@@ -5087,12 +5072,12 @@ int voc_disable_device(uint32_t session_id)
 	struct voice_data *v = voice_get_session(session_id);
 	int ret = 0;
 
+	pr_debug("%s: voc state=%d\n", __func__, v->voc_state);
 	if (v == NULL) {
 		pr_err("%s: v is NULL\n", __func__);
 		return -EINVAL;
 	}
 
-	pr_debug("%s: voc state=%d\n", __func__, v->voc_state);
 	mutex_lock(&v->lock);
 	if (v->voc_state == VOC_RUN) {
 		ret = voice_pause_voice_call(v);
@@ -5125,12 +5110,12 @@ int voc_enable_device(uint32_t session_id)
 	struct voice_data *v = voice_get_session(session_id);
 	int ret = 0;
 
+	pr_debug("%s: voc state=%d\n", __func__, v->voc_state);
 	if (v == NULL) {
 		pr_err("%s: v is NULL\n", __func__);
 		return -EINVAL;
 	}
 
-	pr_debug("%s: voc state=%d\n", __func__, v->voc_state);
 	mutex_lock(&v->lock);
 	if (v->voc_state == VOC_CHANGE) {
 		ret = voice_send_tty_mode_cmd(v);
