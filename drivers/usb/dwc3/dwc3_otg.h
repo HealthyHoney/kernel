@@ -33,7 +33,6 @@
 #endif
 
 #define DWC3_IDEV_CHG_MAX 1500
-#define DWC3_IDEV_CHG_MIN 500
 
 #ifdef CONFIG_LGE_PM
 #define DWC3_IDEV_CHG_PROPRIETARY_MAX 1000
@@ -125,7 +124,6 @@ struct dwc3_charger {
 
 /* for external charger driver */
 extern int dwc3_set_charger(struct usb_otg *otg, struct dwc3_charger *charger);
-extern int smb349_thermal_mitigation_update(int value);
 
 enum dwc3_ext_events {
 	DWC3_EVENT_NONE = 0,		/* no change event */
