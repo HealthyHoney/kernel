@@ -50,7 +50,7 @@
 #include <linux/wakelock.h>
 #include <linux/mutex.h>
 
-static int touch_gesture_enable = 0;
+static int touch_gesture_enable = 1;
 static struct wake_lock touch_wake_lock;
 static struct mutex i2c_suspend_lock;
 static struct mutex lpwg_lock;
@@ -4616,6 +4616,9 @@ static ssize_t show_touch_gesture(struct lge_touch_data *ts, char *buf)
 static ssize_t store_touch_gesture(struct lge_touch_data *ts, const char *buf, size_t count)
 {
 	int value;
+
+	return count;
+
 #if !defined(CONFIG_MACH_MSM8974_G2_OPEN_COM) && !defined(CONFIG_MACH_MSM8974_G2_OPT_AU)
 	if(ts->fw_info.fw_setting.ic_chip_rev == TOUCH_CHIP_REV_A) {
 		TOUCH_INFO_MSG("[%s]Touch IC Rev_A, not support knock on\n", __func__);
