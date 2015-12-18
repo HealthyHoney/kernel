@@ -60,21 +60,21 @@ static uint32_t lowmem_debug_level = 0;
 static int lowmem_adj[6] = {
 	0,
 	1,
-	2,
-	4,
 	6,
+	12,
+	13,
 	15,
 };
 static int lowmem_adj_size = 6;
 static int lowmem_minfree[6] = {
-	2560,
 	4096,
 	8192,
 	16384,
-	24576,
-	32768,
+	28672,
+	46080,
+	51200,
 };
-static int lowmem_minfree_size = 4;
+static int lowmem_minfree_size = 6;
 static int lmk_fast_run = 1;
 
 static unsigned long lowmem_deathpending_timeout;
