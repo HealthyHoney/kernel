@@ -1,4 +1,4 @@
-/* Copyright (c) 2013, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2013, 2015 The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -15,12 +15,11 @@
 
 #include <linux/clk.h>
 #include <linux/io.h>
-/* LGE_CHANGE_S [20130622][youngbae.choi@lge.com] : To enter the deep sleep after finish camera close */
-#include <linux/wakelock.h>
-/* LGE_CHANGE_E [20130622][youngbae.choi@lge.com] : To enter the deep sleep after finish camera close */
 #include <media/v4l2-subdev.h>
 #include <media/msmb_ispif.h>
 #include "msm_sd.h"
+
+#define ISPIF_CLK_INFO_MAX 24
 
 struct ispif_irq_status {
 	uint32_t ispifIrqStatus0;
@@ -63,9 +62,8 @@ struct ispif_device {
 	struct clk *ahb_clk;
 	struct completion reset_complete[VFE_MAX];
 	uint32_t hw_num_isps;
-/* LGE_CHANGE_S [20130622][youngbae.choi@lge.com] : To enter the deep sleep after finish camera close */
-	struct wake_lock        camera_wake_lock;
-/* LGE_CHANGE_E [20130622][youngbae.choi@lge.com] : To enter the deep sleep after finish camera close */
+	uint32_t num_ahb_clk;
 	uint32_t clk_idx;
+	uint32_t ispif_sof_debug;
 };
 #endif
