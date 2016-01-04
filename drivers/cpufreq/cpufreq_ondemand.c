@@ -28,26 +28,16 @@
 #include <linux/workqueue.h>
 #include <linux/slab.h>
 
-/*
- * dbs is used in this file as a shortform for demandbased switching
- * It helps to keep variable names smaller, simpler
- */
+#define MAX_SAMPLING_DOWN_FACTOR            (100000)
 
-#define DEF_FREQUENCY_DOWN_DIFFERENTIAL		(10)
-#define DEF_FREQUENCY_UP_THRESHOLD		(80)
-#define DEF_SAMPLING_DOWN_FACTOR		(1)
-#define MAX_SAMPLING_DOWN_FACTOR		(100000)
-#define MICRO_FREQUENCY_DOWN_DIFFERENTIAL	(3)
-#define MICRO_FREQUENCY_UP_THRESHOLD		(95)
-#define MICRO_FREQUENCY_MIN_SAMPLE_RATE		(10000)
-#define MIN_FREQUENCY_UP_THRESHOLD		(11)
-#define MAX_FREQUENCY_UP_THRESHOLD		(100)
-#define MIN_FREQUENCY_DOWN_DIFFERENTIAL		(1)
-#define DEF_MIDDLE_GRID_STEP           		(14)
-#define DEF_HIGH_GRID_STEP             		(20)
-#define DEF_MIDDLE_GRID_LOAD			(65)
-#define DEF_HIGH_GRID_LOAD			(89)
-#define DEF_OPTIMAL_FREQ			(1574400)
+#define MAX_FREQUENCY_UP_THRESHOLD          (100)
+#define MIN_FREQUENCY_UP_THRESHOLD          (11)
+#define MICRO_FREQUENCY_UP_THRESHOLD        (95)
+
+#define MIN_FREQUENCY_DOWN_DIFFERENTIAL     (1)
+#define MICRO_FREQUENCY_DOWN_DIFFERENTIAL   (3)
+
+#define MICRO_FREQUENCY_MIN_SAMPLE_RATE     (10000)
 
 /*
  * The polling frequency of this governor depends on the capability of
@@ -158,23 +148,25 @@ static struct dbs_tuners {
 	unsigned int high_grid_load;
 	unsigned int debug_mask;
 } dbs_tuners_ins = {
-	.up_threshold_multi_core = DEF_FREQUENCY_UP_THRESHOLD,
-	.up_threshold = DEF_FREQUENCY_UP_THRESHOLD,
-	.sampling_down_factor = DEF_SAMPLING_DOWN_FACTOR,
-	.down_differential = DEF_FREQUENCY_DOWN_DIFFERENTIAL,
-	.down_differential_multi_core = MICRO_FREQUENCY_DOWN_DIFFERENTIAL,
-	.up_threshold_any_cpu_load = DEF_FREQUENCY_UP_THRESHOLD,
-	.middle_grid_step = DEF_MIDDLE_GRID_STEP,
-	.high_grid_step = DEF_HIGH_GRID_STEP,
-	.middle_grid_load = DEF_MIDDLE_GRID_LOAD,
-	.high_grid_load = DEF_HIGH_GRID_LOAD,
+	.sampling_rate = 50000,
+	.up_threshold = 90,
+	.up_threshold_multi_core = 70,
+	.sampling_down_factor = 2,
+	.down_differential = 10,
+	.down_differential_multi_core = 3,
+	.up_threshold_any_cpu_load = 80,
+	.middle_grid_step = 14,
+	.high_grid_step = 20,
+	.middle_grid_load = 65,
+	.high_grid_load = 89,
 	.ignore_nice = 0,
 	.powersave_bias = 0,
-	.sync_freq = 0,
-	.optimal_freq = 0,
-	.input_boost = 0,
-	.optimal_max_freq = DEF_OPTIMAL_FREQ,
-	.debug_mask=0,
+	.sync_freq = 960000,
+	.optimal_freq = 960000,
+	.input_boost = 1190400,
+	.optimal_max_freq = 1574400,
+	.debug_mask = 0,
+	.io_is_busy = 1,
 };
 #if defined(CONFIG_MACH_MSM8974_B1_KR) || defined(CONFIG_MACH_MSM8974_B1W)
 extern int boost_freq;
